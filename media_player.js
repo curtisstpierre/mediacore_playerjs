@@ -71,17 +71,6 @@ $.ajax({
             $.each(results.items, function(key, value){
                 //stored the id, title, and description in a 2D array to easily access the data later
                 ids.push([value.id, value.title, value.description_plain]);
-                //            $('#tracks').append(['<li class="track" onclick="changeVideo('+ key +')">',
-                //                                '<div class="panel">',
-                //                                '<div class="row">',
-                //                                '<div class="large-9 medium-9 small-9 columns">',
-                //                                '<h4>'+value.title+'</h4>',
-                //                                '<p>'+value.description_plain+'</p>',
-                //                                '</div>',
-                //                                '</div>',
-                //                                '<div class="iframe" >' + 'https://riipen.mediacore.tv/media/id:'+value.id + '/embed_player' + '</div>',
-                //                                '</div>',
-                //                                '</li>'].join(' '));
             });
        },
        complete: function(data) {
