@@ -1,4 +1,4 @@
-var ids = [];
+var media_list = [];
 var iframe, title, description, player; //initialize variables for global access
 
 // wait for document to be ready then initialize variables
@@ -26,23 +26,23 @@ function changeVideo(id){
     //make sure that the id is and integer
     var id_index = parseInt(id);
     // check if the source of the new media is the same as the current
-    if (iframe.src != 'https://riipen.mediacore.tv/media/id:'+ ids[id_index][0] + '/embed_player'){
+    if (iframe.src != 'https://riipen.mediacore.tv/media/id:'+ media_list[id_index][0] + '/embed_player'){
         //check the index of the video, if it's the first make sure the previous button goes to the last video
         if (id_index > 0){
             iframe.dataset.previous = id_index - 1;
         }
         else{
-            iframe.dataset.previous = ids.length - 1;
+            iframe.dataset.previous = media_list.length - 1;
         }
         //check the index of the video, if it's the last make sure the next button goes to the first video
-        if (id_index < ids.length-1){
+        if (id_index < media_list.length-1){
             iframe.dataset.next = id_index + 1;
         }
         else{
             iframe.dataset.next = 0;
         }
         //update the source video to the new media
-        iframe.src = 'https://riipen.mediacore.tv/media/id:'+ ids[id_index][0] + '/embed_player';
+        iframe.src = 'https://riipen.mediacore.tv/media/id:'+ media_list[id_index][0] + '/embed_player';
         var player = new playerjs.Player(iframe);
         //make sure the player is ready and start playing
         player.on('ready', function(){
@@ -53,8 +53,8 @@ function changeVideo(id){
             next();
         });
         //set the title and the description of the new media
-        title.html('<h4>' + ids[id_index][1] + '</h4>');
-        description.html(ids[id_index][2]);
+        title.html('<h4>' + media_list[id_index][1] + '</h4>');
+        description.html(media_list[id_index][2]);
     }
 }
 //call out to api to grab media and build a playlist
@@ -70,7 +70,7 @@ $.ajax({
        success: function(results) {
             $.each(results.items, function(key, value){
                 //stored the id, title, and description in a 2D array to easily access the data later
-                ids.push([value.id, value.title, value.description_plain]);
+                media_list.push([value.id, value.title, value.description_plain]);
             });
        },
        complete: function(data) {
