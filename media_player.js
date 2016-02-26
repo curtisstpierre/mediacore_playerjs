@@ -7,6 +7,28 @@ $(document).on('ready', function(){
     title = $('#title');
     description = $('#description');
     player = new playerjs.Player(iframe);
+
+    //call out to api to grab media and build a playlist
+    $.ajax({
+        type: 'GET',
+        dataType: "json",
+        url: 'https://riipen.mediacore.tv/api2/media',
+        data: {},
+        crossDomain: true,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader ("Authorization", "Basic " + btoa('riipenchallenge@mediacore.com' + ":" + 'riipenchallenge'));
+        },
+        success: function(results) {
+            $.each(results.items, function(key, media){
+                //stored the id, title, and description in a 2D array to easily access the data later
+                media_list.push([media.id, media.title, media.description_plain]);
+            });
+        },
+        complete: function(data) {
+            //when the data is retrieved from the request, start the first video
+            changeVideo(0);
+        }
+    });
 });
 
 //play the previous track by index
@@ -57,24 +79,4 @@ function changeVideo(id){
         description.html(media_list[media][2]);
     }
 }
-//call out to api to grab media and build a playlist
-$.ajax({
-       type: 'GET',
-       dataType: "json",
-       url: 'https://riipen.mediacore.tv/api2/media',
-       data: {},
-       crossDomain: true,
-       beforeSend: function (xhr) {
-       xhr.setRequestHeader ("Authorization", "Basic " + btoa('riipenchallenge@mediacore.com' + ":" + 'riipenchallenge'));
-       },
-       success: function(results) {
-            $.each(results.items, function(key, media){
-                //stored the id, title, and description in a 2D array to easily access the data later
-                media_list.push([media.id, media.title, media.description_plain]);
-            });
-       },
-       complete: function(data) {
-            //when the data is retrieved from the request, start the first video
-            changeVideo(0);
-       }
-});
+
