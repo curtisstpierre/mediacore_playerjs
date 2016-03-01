@@ -24,9 +24,18 @@ $(document).on('ready', function(){
                 media_list.push([media.id, media.title, media.description_plain]);
             });
         },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert('An error has occured, please try reloading the page.');
+        },
         complete: function(data) {
             //when the data is retrieved from the request, start the first video
-            changeVideo(0);
+            if (media_list.length > 0){
+                changeVideo(0);
+            }
+            else{
+                title.html('<h4>No Media Available</h4>');
+                description.html('No media available at this time');
+            }
         }
     });
 });
